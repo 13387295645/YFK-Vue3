@@ -6,7 +6,8 @@
         <span class="username">{{ visitor.name }}</span>
       </div>
       <div class="left">
-        <el-button type="primary" size="default" :icon="Edit" circle></el-button>
+        <el-button type="primary" size="default" :icon="Edit" circle @click="$emit('changeSence')"></el-button>
+        <slot></slot>
       </div>
     </div>
     <div class="bottom">
@@ -30,7 +31,7 @@
 import { Edit } from '@element-plus/icons-vue'
 //数据
 defineProps(['visitor', 'index', 'currentIndex'])
-
+let $emit = defineEmits(['changeSence'])
 //方法
 
 </script>

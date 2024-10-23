@@ -26,6 +26,8 @@ enum API {
   MEMBERORDERINFO_URL = '/order/orderInfo/auth/',
   // 获取订单状态
   GETORDERSTATUS_URL = '/order/orderInfo/auth/getStatusList',
+  // 获取省市数据接口
+  CITY_URL = '/cmn/dict/findByParentId/'
 }
 
 // 提交订单数据
@@ -58,3 +60,6 @@ export const reqMemberOrderInfo = (page: number, limit: number, patientId: strin
 // 获取订单状态
 export const reqOrderStatus = () =>
   request.get<any, OrderStatusResponseData>(API.GETORDERSTATUS_URL)
+// 获取省市地区
+export const reqCity = (parentId: string) =>
+  request.get<any, any>(API.CITY_URL + parentId)

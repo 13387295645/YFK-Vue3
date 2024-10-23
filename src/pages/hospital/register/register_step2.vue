@@ -74,7 +74,7 @@
 </template>
 
 <script lang='ts' setup name='Step2'>
-import Visitor from './visitor.vue';
+// import Visitor from './visitor.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { User } from '@element-plus/icons-vue'
@@ -83,7 +83,6 @@ import { UserArr, UserResPonseData, DoctorInfoData } from '@/api/hospital/type';
 import { reqSubmitOrder } from '@/api/user';
 import { SubmitOrder } from '@/api/user/type';
 import { ElMessage } from 'element-plus';
-// import emitter from '@/utils/emitter';
 //数据
 // 存储全部就诊人信息
 let visitorArr = ref<UserArr>([])
