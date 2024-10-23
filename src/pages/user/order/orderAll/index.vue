@@ -8,17 +8,18 @@
       <!-- 下拉菜单 -->
       <el-form :inline="true">
         <el-form-item label="就诊人" style="width: 300px;">
-          <el-select placeholder="请选择就诊人">
-            <el-option label="111" value=""></el-option>
-            <el-option label="111" value=""></el-option>
-            <el-option label="111" value=""></el-option>
+          <el-select placeholder="请选择就诊人" v-model="patientId" @change="change">
+            <el-option label="获取全部就诊人" value=""></el-option>
+            <el-option v-for="(patient, index) in PatientArr" :key="index" :label="patient.name"
+              :value="patient.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="订单状态" style="width: 300px;">
-          <el-select placeholder="请选择订单状态">
-            <el-option label="111" value=""></el-option>
-            <el-option label="111" value=""></el-option>
-            <el-option label="111" value=""></el-option>
+          <el-select placeholder="请选择订单状态" v-model="orderStatus" @change="change">
+            <el-option label="获取全部订单" value=""></el-option>
+            <el-option v-for="(status, index) in OrderStatusArr" :key="index" :label="status.comment"
+              :value="status.status">
+            </el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -47,11 +48,12 @@
 
 <script lang='ts' setup name='orderAll'>
 import { onMounted, ref } from 'vue';
-import { reqMemberOrderInfo } from '@/api/user';
-import { MemberOrderInfoResponseData, Records } from '@/api/user/type';
+import { reqMemberOrderInfo, reqOrderStatus } from '@/api/user';
+import { MemberOrderInfoResponseData, Records, OrderStatusResponseData, AllOrderStatus } from '@/api/user/type';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-// import emitter from '@/utils/emitter';
+import { reqGetUser } from '@/api/hospital';
+import { UserResPonseData, UserArr } from '@/api/hospital/type';
 //数据
 let pageNo = ref<number>(1)
 let pageNumber = ref<number>(10)
@@ -60,10 +62,15 @@ let orderStatus = ref<string>('')
 let AllOrderArr = ref<Records>([])
 let total = ref<number>()
 let $router = useRouter()
-// let emVisitor = ref()
+// 存储订单状态
+let OrderStatusArr = ref<AllOrderStatus>([])
+// 获取就诊人
+let PatientArr = ref<UserArr>([])
 //方法
 onMounted(() => {
   getOrderInfo()
+  getOrderStatus()
+  getPatient()
 })
 // 获取所有订单数据
 const getOrderInfo = async (pager: number = 1) => {
@@ -79,6 +86,32 @@ const getOrderInfo = async (pager: number = 1) => {
     })
   }
 }
+// 获取就诊状态数据
+const getOrderStatus = async () => {
+  let result: OrderStatusResponseData = await reqOrderStatus()
+  if (result.code == 200) {
+    OrderStatusArr.value = result.data
+  } else {
+    ElMessage({
+      type: 'error',
+      message: result.message
+    })
+  }
+
+}
+// 获取就诊人数据
+const getPatient = async () => {
+  let result: UserResPonseData = await reqGetUser()
+  if (result.code == 200) {
+    PatientArr.value = result.data
+  } else {
+    ElMessage({
+      type: 'error',
+      message: result.message
+    })
+  }
+
+}
 // 编程式路由导航到订单详情
 const getDetail = (row: any) => {
   $router.push({ path: '/user/order', query: { orderID: row.id } })
@@ -88,9 +121,9 @@ const handler = (pagesiz: number) => {
   pageNumber.value = pagesiz
   getOrderInfo()
 }
-// emitter.on('getVisitor', (value: any) => {
-//   emVisitor.value = value
-// })
+const change = () => {
+  getOrderInfo()
+}
 </script>
 
 <style scoped></style>

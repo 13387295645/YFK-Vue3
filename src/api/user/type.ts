@@ -157,3 +157,15 @@ export interface MemberOrderInfoResponseData extends ResponseData {
     "pages": number,
   }
 }
+
+// 获取订单状态ts类型
+export interface OrderStatus {
+  "comment": string,
+  "status": number
+}
+
+export type AllOrderStatus = OrderStatus[]
+
+export interface OrderStatusResponseData extends ResponseData {
+  data: AllOrderStatus
+}

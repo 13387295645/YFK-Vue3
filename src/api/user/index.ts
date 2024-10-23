@@ -2,7 +2,7 @@
 import request from "@/utils/request";
 import {
   SubmitOrder, OrderResponseData, QrCode, payCon, MemberInfoResponseData,
-  CertifiResponseData, MemberParams, MemberOrderInfoResponseData
+  CertifiResponseData, MemberParams, MemberOrderInfoResponseData, OrderStatusResponseData
 } from "./type";
 // 枚举API地址
 enum API {
@@ -23,7 +23,9 @@ enum API {
   // 会员认证接口
   MEMBERCERTATION_URL = '/user/auth/userAuah',
   // 获取所有订单接口
-  MEMBERORDERINFO_URL = '/order/orderInfo/auth/'
+  MEMBERORDERINFO_URL = '/order/orderInfo/auth/',
+  // 获取订单状态
+  GETORDERSTATUS_URL = '/order/orderInfo/auth/getStatusList',
 }
 
 // 提交订单数据
@@ -53,3 +55,6 @@ export const reqMemberCreation = (data: MemberParams) =>
 // 获取所有订单
 export const reqMemberOrderInfo = (page: number, limit: number, patientId: string, orderStatus: string) =>
   request.get<any, MemberOrderInfoResponseData>(API.MEMBERORDERINFO_URL + `${page}/${limit}?patientId=${patientId}&orderStatus=${orderStatus}`)
+// 获取订单状态
+export const reqOrderStatus = () =>
+  request.get<any, OrderStatusResponseData>(API.GETORDERSTATUS_URL)
