@@ -6,7 +6,7 @@
         <span class="username">{{ visitor.name }}</span>
       </div>
       <div class="left">
-        <el-button type="primary" size="default" :icon="Edit" circle @click="$emit('changeSence')"></el-button>
+        <el-button type="primary" size="default" :icon="Edit" circle @click="handler"></el-button>
         <slot></slot>
       </div>
     </div>
@@ -28,12 +28,22 @@
 </template>
 
 <script lang='ts' setup name='Visitor'>
-import { Edit } from '@element-plus/icons-vue'
+import { Edit } from '@element-plus/icons-vue';
+import { useRoute, useRouter } from 'vue-router';
 //数据
-defineProps(['visitor', 'index', 'currentIndex'])
+let $route = useRoute()
+let $router = useRouter()
+let props = defineProps(['visitor', 'index', 'currentIndex'])
 let $emit = defineEmits(['changeSence'])
 //方法
-
+const handler = () => {
+  // 如果是就诊人管理模块点击修改，否则就是预约挂号模块点击
+  if ($route.path == '/user/patient') {
+    $emit('changeSence', props.visitor)
+  } else {
+    $router.push({ path: '/user/patient', query: { type: 'edit', id: props.visitor.id } })
+  }
+}
 </script>
 
 <style scoped lang="scss">

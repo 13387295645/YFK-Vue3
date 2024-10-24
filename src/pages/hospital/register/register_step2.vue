@@ -6,7 +6,7 @@
       <template #header>
         <div class="card-header">
           <span>请选择就诊人</span>
-          <el-button type="primary" size="default" :icon="User">添加就诊人</el-button>
+          <el-button type="primary" size="default" :icon="User" @click="toPatient">添加就诊人</el-button>
         </div>
       </template>
       <!-- 卡片的身体部分展示就诊人信息 -->
@@ -74,7 +74,6 @@
 </template>
 
 <script lang='ts' setup name='Step2'>
-// import Visitor from './visitor.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { User } from '@element-plus/icons-vue'
@@ -135,6 +134,10 @@ const submitOrder = async () => {
       message: result.message
     })
   }
+}
+// 跳转到添加就诊人模块
+const toPatient = () => {
+  $router.push({ path: '/user/patient', query: { type: 'add' } })
 }
 </script>
 
