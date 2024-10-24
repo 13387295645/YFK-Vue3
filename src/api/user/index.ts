@@ -2,7 +2,7 @@
 import request from "@/utils/request";
 import {
   SubmitOrder, OrderResponseData, QrCode, payCon, MemberInfoResponseData,
-  CertifiResponseData, MemberParams, MemberOrderInfoResponseData, OrderStatusResponseData
+  CertifiResponseData, MemberParams, MemberOrderInfoResponseData, OrderStatusResponseData, AddorUpdateUser
 } from "./type";
 // 枚举API地址
 enum API {
@@ -27,7 +27,11 @@ enum API {
   // 获取订单状态
   GETORDERSTATUS_URL = '/order/orderInfo/auth/getStatusList',
   // 获取省市数据接口
-  CITY_URL = '/cmn/dict/findByParentId/'
+  CITY_URL = '/cmn/dict/findByParentId/',
+  // 新增就诊人接口
+  ADDUSER_URL = '/user/patient/auth/save',
+  // 更新就诊人接口
+  UPDATEUSER_URL = '/user/patient/auth/update'
 }
 
 // 提交订单数据
@@ -63,3 +67,11 @@ export const reqOrderStatus = () =>
 // 获取省市地区
 export const reqCity = (parentId: string) =>
   request.get<any, any>(API.CITY_URL + parentId)
+// 新增或修改就诊人
+export const reqAddorUpdateUser = (data: AddorUpdateUser) => {
+  if (data.id) {
+    return request.put<any, any>(API.UPDATEUSER_URL, data)
+  } else {
+    return request.post<any, any>(API.ADDUSER_URL, data)
+  }
+}

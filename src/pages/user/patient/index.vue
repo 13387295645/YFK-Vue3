@@ -15,7 +15,7 @@
         </Visitor>
       </div>
       <div class="addEdit" v-else>
-        <AddEdit />
+        <AddEdit :value="sence" @change="sence = $event" />
       </div>
     </el-card>
   </div>
