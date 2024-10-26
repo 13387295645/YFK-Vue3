@@ -11,7 +11,13 @@
       <div class="visitors" v-if="sence">
         <Visitor class="item" v-for="(visitor, index) in patientArr" :key="visitor.id" :visitor="visitor" :index="index"
           @changeSence="changeSence">
-          <el-button type="danger" size="default" :icon="Delete" circle></el-button>
+          <!-- 删除就诊人按钮 -->
+          <el-popconfirm :title="`您确定要删除${visitor.name}吗?`" @confirm="removeUser(visitor.id)" width="200px">
+            <template #reference>
+              <el-button type="danger" size="default" :icon="Delete" circle></el-button>
+            </template>
+          </el-popconfirm>
+
         </Visitor>
       </div>
       <!-- 添加就诊人 -->
@@ -97,7 +103,7 @@ import { Delete, User } from '@element-plus/icons-vue';
 import { onMounted, ref, reactive, watch } from 'vue';
 import { reqGetUser } from '@/api/hospital/index'
 import { UserResPonseData, UserArr } from '@/api/hospital/type';
-import { reqCertificatesType, reqCity, reqAddorUpdateUser } from '@/api/user';
+import { reqCertificatesType, reqCity, reqAddorUpdateUser, reqRemoveUser } from '@/api/user';
 import { CertifiResponseData, CertifiArr, AddorUpdateUser } from '@/api/user/type';
 import type { CascaderProps } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router';
@@ -247,6 +253,26 @@ watch(() => patientArr.value, () => {
     Object.assign(UserParams, patient)
   }
 })
+
+// 删除就诊人
+const removeUser = async (id: number) => {
+  try {
+    // 删除成功
+    await reqRemoveUser(id)
+    // 展示成功信息
+    ElMessage({
+      type: 'success',
+      message: '删除成功'
+    })
+    // 页面重新获取就诊人数据
+    getPatient()
+  } catch (error) {
+    ElMessage({
+      type: 'error',
+      message: '删除失败'
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">

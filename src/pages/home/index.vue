@@ -40,6 +40,7 @@ import Sider from './sider/index.vue'
 import { Content, HospitalResponeseData } from '@/api/home/type'
 import { ref, onMounted } from 'vue'
 import { reqHospital } from '@/api/home'
+import { ElMessage } from 'element-plus'
 
 // 分页器页码
 const PageNo = ref<number>(1)
@@ -66,6 +67,11 @@ const getHospitalInfo = async () => {
     hasHospitalArr.value = result.data.content;
     // 存储医院的总个数
     total.value = result.data.totalElements;
+  } else {
+    ElMessage({
+      type: 'error',
+      message: result.message || '医院卡片数据获取失败'
+    })
   }
 }
 // 分页器页码发生变化时回调

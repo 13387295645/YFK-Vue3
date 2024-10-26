@@ -104,7 +104,10 @@ import useUserStore from '@/store/modules/user';
 import { ElMessage } from 'element-plus';
 import { reqWxLogin } from '@/api/hospital';
 import type { WXLoginResponse } from '@/api/hospital/type';
+import { useRoute, useRouter } from 'vue-router';
 //数据
+let $route = useRoute()
+let $router = useRouter()
 let userStore = useUserStore()
 let scene = ref<number>(0) //0代表手机号码登录 1代表微信扫码登录
 let loginParam = reactive({
@@ -188,10 +191,22 @@ watch(() => flag.value, () => {
 const login = async () => {
   //保证表单校验的两项都符合条件后再执行后面代码
   await form.value.validate()
+  //发起登录请求
+  //登录请求成功:顶部组件需要展示用户名字、对话框关闭
+  //登录请求失败:弹出对应登录失败的错误信息
   try {
+    // 登录成功
     userStore.Userlogin(loginParam)
-    // 用户登录成功关闭对话框
+    // 关闭对话框
     userStore.visiable = false
+    //获取路径上的redirect
+    let redirect = $route.query.redirect
+    // 有的话往携带的地址跳，没有则返回home
+    if (redirect) {
+      $router.push(redirect as string)
+    } else {
+      $router.push('/home')
+    }
   } catch (error) {
     // 显示错误信息
     ElMessage({
@@ -233,13 +248,23 @@ const rules = {
 
   // 自定义校验
   phone: [{ validator: validatePhone, trigger: 'blur' }],
-  code: [{ validator: validateCode, trigger: 'blur' }],
+  code: [{ validator: validateCode, }],
 }
 
 // 点击切换手机验证码登录
 const changePhone = () => {
   scene.value = 0
 }
+
+//监听场景的数据
+watch(
+  () => scene.value,
+  (val: number) => {
+    if (val === 1) {
+      userStore.queryState();
+    }
+  }
+);
 </script>
 
 <style scoped lang="scss">

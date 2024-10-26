@@ -10,8 +10,8 @@
         </el-icon>
         <span>完成实名认证后才能添加就诊人，正常进行挂号，为了不影响后续操作，请提前进行实名认证</span>
       </div>
-      <!-- 用户已验证的结构偶——表格信息 -->
-      <el-descriptions v-if="MemberInfo.authStatus == 0" class="margin-top" :column="1" border>
+      <!-- 用户已验证的结构——表格信息 -->
+      <el-descriptions v-if="MemberInfo.authStatus == 1" class="margin-top" :column="1" border>
         <el-descriptions-item label-align="center" :width="10">
           <template #label>
             <div class="cell-item">用户姓名</div>

@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import router from './router'
 import pinia from '@/store'
+import router from './router'
+
 
 // 引入Element-Plus插件
 import ElementPlus from 'element-plus'
@@ -19,6 +20,7 @@ import HospitalLogin from '@/components/hospital_login/index.vue'
 import Visitor from './components/visitor/visitor.vue'
 import AddEdit from './components/visitor/addEdit.vue'
 
+
 const app = createApp(App)
 // 使用全局组件
 app.component('HospitalTop', HospitalTop)
@@ -27,8 +29,9 @@ app.component('HospitalLogin', HospitalLogin)
 app.component('Visitor', Visitor)
 app.component('AddEdit', AddEdit)
 
-app.use(router)
 app.use(pinia)
+app.use(router)
+import './permission'
 // Element国际化，否则默认是英文显示
 app.use(ElementPlus, {
   locale: zhCn,

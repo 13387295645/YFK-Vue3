@@ -30,7 +30,7 @@
     <div class="bottom">
       <!-- 展示即将放号的时间 -->
       <div class="will" v-if="workTime.status == 1">
-        <span>2024-10-21-8:30 放号</span>
+        <span>{{ workTime.workDate }} - {{ workTime.dayOfWeek }} 放号</span>
       </div>
       <!-- 展示医生的结构，上午/下午 -->
       <div class="doctor" v-else>

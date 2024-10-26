@@ -161,7 +161,7 @@ export interface User {
     provinceString: null
   },
   userId: number
-  name: number
+  name: string
   certificatesType: string
   certificatesNo: string
   sex: number

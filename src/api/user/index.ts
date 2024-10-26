@@ -31,7 +31,9 @@ enum API {
   // 新增就诊人接口
   ADDUSER_URL = '/user/patient/auth/save',
   // 更新就诊人接口
-  UPDATEUSER_URL = '/user/patient/auth/update'
+  UPDATEUSER_URL = '/user/patient/auth/update',
+  // 删除就诊人接口
+  DELETEUSER_URL = '/user/patient/auth/remove/',
 }
 
 // 提交订单数据
@@ -75,3 +77,7 @@ export const reqAddorUpdateUser = (data: AddorUpdateUser) => {
     return request.post<any, any>(API.ADDUSER_URL, data)
   }
 }
+
+// 删除就诊人
+export const reqRemoveUser = (id: number) =>
+  request.delete(API.DELETEUSER_URL + id)
